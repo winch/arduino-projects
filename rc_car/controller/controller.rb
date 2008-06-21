@@ -7,7 +7,7 @@ if ARGV.size < 1
     exit
 end
 
-sp = SerialPort.new(ARGV[0].to_i, 9600, 8, 1, SerialPort::NONE)
+sp = SerialPort.new(ARGV[0], 9600, 8, 1, SerialPort::NONE)
 
 sp.putc('a')
 sleep(5)
