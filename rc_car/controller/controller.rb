@@ -13,7 +13,7 @@ STEER_AXIS = 0
 THROTTLE_AXIS = 2
 
 
-sp = SerialPort.new(ARGV[0], 38400, 8, 1, SerialPort::NONE)
+sp = SerialPort.new(ARGV[0], 9600, 8, 1, SerialPort::NONE)
 js = Joystick::Device::open ARGV[1]
 
 throttle = Axis.new('t', sp, 1500, 1000, 2000, true)
