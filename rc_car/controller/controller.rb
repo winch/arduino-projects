@@ -4,7 +4,7 @@ require 'serialport'
 require 'joystick'
 require File.dirname(__FILE__) + '/axis.rb'
 
-if ARGV.size < 1
+if ARGV.size < 2
     puts 'Usage ./controller.rb serialPort joystick'
     exit
 end
