@@ -10,8 +10,6 @@
 
 struct rtc_time time;
 
-int pos = 0;
-
 void setup()
 {
   Serial.begin(9600);
@@ -26,12 +24,16 @@ void loop()
 {
   serial_process();
   
-  segment_update(pos);
-  pos++;
+  rtc_read(&time);
   
-  if (pos > 8)
-    pos = 0;
+  int hour_ten, hour_unit, min_ten, min_unit;
+  hour_ten = time.hour / 10;
+  hour_unit = time.hour - 10 * hour_ten;
+  min_ten = time.minute / 10;
+  min_unit = time.minute - 10 * min_ten;
   
-  delay(2000);
+  segment_update(hour_ten, hour_unit, min_ten, min_unit);
+  
+  delay(60000);
   
 }
