@@ -17,6 +17,7 @@ void rtc_init(rtc_time *time)
   time->w_day = 0;
 }
 
+// read time into rtc_time struct
 void rtc_read(rtc_time *time)
 {
   int address = 0;
@@ -67,4 +68,13 @@ void rtc_read(rtc_time *time)
     }
     address ++;
   }
+}
+
+// write the time in rtc_time struct to rtc
+void rtc_write(rtc_time *time)
+{
+  Wire.beginTransmission(104);
+  Wire.send((byte) 6);
+  Wire.send(8);
+  Wire.endTransmission();
 }

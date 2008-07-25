@@ -1,6 +1,8 @@
 #include <Wire.h>
 #include "nes.h"
 #include "rtc.h"
+#include "serial.h"
+#include "segment.h"
 
 // RTC
 // SDA = analog 4
@@ -8,35 +10,28 @@
 
 struct rtc_time time;
 
+int pos = 0;
+
 void setup()
 {
   Serial.begin(9600);
   
   nes_init();
+  segment_init();
   rtc_init(&time);
+  
 }
 
 void loop()
 {
-  byte b = nes_button_read();
+  serial_process();
   
-  if (b & NES_START)
-  {
-    rtc_read(&time);
-    Serial.print(time.year);
-    Serial.print("-");
-    Serial.print(time.month, DEC);
-    Serial.print("-");
-    Serial.print(time.day, DEC);
-    Serial.print(" ");
-    Serial.print(time.w_day, DEC);
-    Serial.print(" ");
-    Serial.print(time.hour, DEC);
-    Serial.print(":");
-    Serial.print(time.minute, DEC);
-    Serial.print(":");
-    Serial.println(time.second,DEC);
-  }
+  segment_update(pos);
+  pos++;
   
-  delay(1000);
+  if (pos > 8)
+    pos = 0;
+  
+  delay(2000);
+  
 }

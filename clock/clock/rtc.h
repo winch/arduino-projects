@@ -17,6 +17,8 @@ void rtc_init(rtc_time*);
 
 void rtc_read(rtc_time*);
 
+void rtc_write(rtc_time*);
+
 #endif
 
 
