@@ -1,21 +1,21 @@
 
 #include "WConstants.h"
 
-#define NES_LATCH 6
-#define NES_CLOCK 5
-#define NES_DATA 4
+#define NES_LATCH 11
+#define NES_CLOCK 12
+#define NES_DATA 13
 
 void nes_init()
 {
   pinMode(NES_LATCH, OUTPUT);
   pinMode(NES_CLOCK, OUTPUT);
-  pinMode(NES_DATA, INPUT);
 }
 
 byte nes_button_read()
 {
   int i;
   byte value = 0;
+  pinMode(NES_DATA, INPUT);
 
   //latch
   digitalWrite(NES_LATCH, HIGH);
@@ -33,6 +33,8 @@ byte nes_button_read()
     digitalWrite(NES_CLOCK, LOW);
     delayMicroseconds(1);
   }
+  
+  digitalWrite(NES_LATCH, HIGH);
   
   return ~value;
 }

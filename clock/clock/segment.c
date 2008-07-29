@@ -1,9 +1,10 @@
 
 #include "WConstants.h"
 
-#define SEGMENT_LATCH 8
-#define SEGMENT_CLOCK 9
-#define SEGMENT_DATA 10
+#define SEGMENT_LATCH 10
+#define SEGMENT_CLOCK 12
+#define SEGMENT_DATA 13
+#define SEGMENT_ENABLE 9
 
 //characters
 #define SEGMENT_POINT 0x20
@@ -27,12 +28,12 @@ void segment_init()
   pinMode(SEGMENT_LATCH, OUTPUT);
   digitalWrite(SEGMENT_LATCH, HIGH);
   pinMode(SEGMENT_CLOCK, OUTPUT);
-  pinMode(SEGMENT_DATA, OUTPUT);
 }
 
 void segment_update(byte a, byte b, byte c, byte d)
 {
   int digit;
+  pinMode(SEGMENT_DATA, OUTPUT);
   
   digitalWrite(SEGMENT_CLOCK, LOW);
   digitalWrite(SEGMENT_LATCH, LOW);
