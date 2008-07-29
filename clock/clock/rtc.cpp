@@ -1,6 +1,7 @@
 
 #include <Wire.h>
-#include "WConstants.h"
+#include "WProgram.h"
+//#include "WConstants.h"
 #include "rtc.h"
 
 //address 104
@@ -42,7 +43,7 @@ void rtc_read(rtc_time *time)
         break;
       case 2:
         //hours
-        time->hour = ((b & 0x30) >> 4) * 10;
+        time->hour = ((b & 0x10) >> 4) * 10;
         time->hour += b & 0x0f;
         break;
       case 3:
@@ -73,8 +74,9 @@ void rtc_read(rtc_time *time)
 // write the time in rtc_time struct to rtc
 void rtc_write(rtc_time *time)
 {
+  byte b;
   Wire.beginTransmission(104);
-  Wire.send((byte) 6);
-  Wire.send(8);
+  Wire.send((byte) 2);
+  Wire.send(0x42);
   Wire.endTransmission();
 }
