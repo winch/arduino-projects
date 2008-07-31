@@ -1,10 +1,11 @@
 
 #include "WConstants.h"
 
+#define SEGMENT_ENABLE 9
 #define SEGMENT_LATCH 10
+//clock and data line are shared with nes controller
 #define SEGMENT_CLOCK 12
 #define SEGMENT_DATA 13
-#define SEGMENT_ENABLE 9
 
 //characters
 #define SEGMENT_POINT 0x20
@@ -23,11 +24,14 @@ static byte segment_digits[] = {
   0x5f, // 9
 };
 
+static void segment_write(byte);
+
 void segment_init()
 {
   pinMode(SEGMENT_LATCH, OUTPUT);
   digitalWrite(SEGMENT_LATCH, HIGH);
   pinMode(SEGMENT_CLOCK, OUTPUT);
+  pinMode(SEGMENT_ENABLE, OUTPUT);
 }
 
 void segment_update(byte a, byte b, byte c, byte d)
@@ -35,6 +39,7 @@ void segment_update(byte a, byte b, byte c, byte d)
   int digit;
   pinMode(SEGMENT_DATA, OUTPUT);
   
+  digitalWrite(SEGMENT_ENABLE, LOW);
   digitalWrite(SEGMENT_CLOCK, LOW);
   digitalWrite(SEGMENT_LATCH, LOW);
   delayMicroseconds(1);
@@ -49,7 +54,7 @@ void segment_update(byte a, byte b, byte c, byte d)
 }
 
 // write a byte 
-void segment_write(byte value)
+static void segment_write(byte value)
 {
   int bit;
   for (bit = 0; bit < 8; bit++)

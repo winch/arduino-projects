@@ -17,7 +17,7 @@ extern "C"
 {
 
   void nes_init();
-  byte nes_button_read();
+  byte nes_read();
 
 }
 

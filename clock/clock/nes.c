@@ -2,6 +2,7 @@
 #include "WConstants.h"
 
 #define NES_LATCH 11
+//clock and data lines are shared with 7 segment display
 #define NES_CLOCK 12
 #define NES_DATA 13
 
@@ -11,7 +12,7 @@ void nes_init()
   pinMode(NES_CLOCK, OUTPUT);
 }
 
-byte nes_button_read()
+byte nes_read()
 {
   int i;
   byte value = 0;

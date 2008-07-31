@@ -7,6 +7,7 @@ struct rtc_time
   byte second;
   byte minute;
   byte hour;
+  char period;
   byte w_day;
   byte day;
   byte month;

@@ -6,6 +6,8 @@
 
 //address 104
 
+static byte rtc_byte_to_bcd(byte value);
+
 void rtc_init(rtc_time *time)
 {
   Wire.begin();
@@ -15,6 +17,7 @@ void rtc_init(rtc_time *time)
   time->second = 0;
   time->minute = 0;
   time->hour = 0;
+  time->period = 'a';
   time->w_day = 0;
 }
 
@@ -45,10 +48,15 @@ void rtc_read(rtc_time *time)
         //hours
         time->hour = ((b & 0x10) >> 4) * 10;
         time->hour += b & 0x0f;
+        //period high = pm
+        if (b & 0x20)
+          time->period = 'p';
+        else
+          time->period = 'a';
         break;
       case 3:
         //week day
-        time->w_day = b;
+        time->w_day = b - 1;
         break;
       case 4:
         //day
@@ -74,9 +82,38 @@ void rtc_read(rtc_time *time)
 // write the time in rtc_time struct to rtc
 void rtc_write(rtc_time *time)
 {
-  byte b;
+  byte data;
   Wire.beginTransmission(104);
-  Wire.send((byte) 2);
-  Wire.send(0x42);
+  Wire.send((byte) 0);
+  //seconds
+  data = rtc_byte_to_bcd(time->second);
+  data &= 0x7f; //clear clock halt bit
+  Wire.send(data);
+  //minutes
+  Wire.send(rtc_byte_to_bcd(time->minute));
+  //hours
+  data = rtc_byte_to_bcd(time->hour);
+  if (time->period == 'a')
+    data &= 0xdf; //clear am/pm bit to am
+  else
+    data |= 0x20; //set am/pm bit to pm
+  data |= 0x40; //set 12h bit
+  Wire.send(data);
+  //w_day
+  Wire.send(rtc_byte_to_bcd(time->w_day + 1));
+  //day
+  Wire.send(rtc_byte_to_bcd(time->day));
+  //month
+  Wire.send(rtc_byte_to_bcd(time->month));
+  //year
+  Wire.send(rtc_byte_to_bcd(time->year - 2000));
   Wire.endTransmission();
+}
+
+static byte rtc_byte_to_bcd(byte value)
+{
+  byte bcd;
+  bcd = (value / 10) << 4;
+  bcd |= (value - (value / 10) * 10) & 0xf;
+  return bcd;
 }
