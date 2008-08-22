@@ -4,7 +4,9 @@
 //#include "WConstants.h"
 #include "rtc.h"
 
-//address 104
+// address 104
+// SDA = analog 4
+// SCL = analog 5
 
 static byte rtc_byte_to_bcd(byte value);
 

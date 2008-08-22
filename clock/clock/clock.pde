@@ -5,12 +5,8 @@
 #include "segment.h"
 #include "temp.h"
 
-// RTC
-// SDA = analog 4
-// SCL = analog 5
-
 struct rtc_time time;
-long last_update;
+long time_update;
 
 void setup()
 {
@@ -21,27 +17,28 @@ void setup()
   temp_init();
   rtc_init(&time);
   
-  last_update = millis();
+  time_update = millis();
 }
 
 void loop()
 {
   serial_process(&time);
   
-  if (millis() - last_update > 1000)
+  //update time
+  if (millis() - time_update > 1000)
   {
     rtc_read(&time);
+    segment_print_time(time.hour, time.minute);
+    time_update = millis();
+  }
   
-    int hour_ten, hour_unit, min_ten, min_unit;
-    hour_ten = time.hour / 10;
-    hour_unit = time.hour - 10 * hour_ten;
-    min_ten = time.minute / 10;
-    min_unit = time.minute - 10 * min_ten;
+  //buttons
+  byte button = nes_read();
   
-    segment_update(hour_ten, hour_unit, min_ten, min_unit);
-    last_update = millis();
-  }  
-  //Serial.println(nes_read(), BIN);
-  //Serial.println(temp_read());
+  if (button & NES_START)
+    segment_on();
+  
+  //update segment fade
+  segment_fade();
   
 }

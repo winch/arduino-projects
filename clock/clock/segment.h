@@ -6,7 +6,10 @@ extern "C"
 {
 
 void segment_init();
-void segment_update(byte, byte, byte, byte);
+void segment_fade();
+void segment_on();
+
+void segment_print_time(byte, byte);
 
 }
 
