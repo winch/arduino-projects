@@ -1,12 +1,15 @@
+#include <LCD4Bit.h>
 #include <Wire.h>
 #include "nes.h"
 #include "rtc.h"
 #include "serial.h"
 #include "segment.h"
 #include "temp.h"
+#include "lcd.h"
 
 struct rtc_time time;
 long time_update;
+byte time_day;
 
 void setup()
 {
@@ -16,8 +19,10 @@ void setup()
   segment_init();
   temp_init();
   rtc_init(&time);
+  lcd_init();
   
   time_update = millis();
+  time_day = 0;
 }
 
 void loop()
@@ -27,9 +32,15 @@ void loop()
   //update time
   if (millis() - time_update > 1000)
   {
+    time_update = millis();
     rtc_read(&time);
     segment_print_time(time.hour, time.minute);
-    time_update = millis();
+    lcd_print_time(0, &time);
+    if (time_day != time.day)
+    {
+      lcd_print_date(1, &time);
+      time_day = time.day;
+    }
   }
   
   //buttons

@@ -8,6 +8,21 @@
 // SDA = analog 4
 // SCL = analog 5
 
+char rtc_days[][4] = {
+  "Sun",
+  "Mon",
+  "Tue",
+  "Wed",
+  "Thu",
+  "Fri",
+  "Sat",
+};
+
+char rtc_period[][3] = {
+  "am",
+  "pm"  
+};
+
 static byte rtc_byte_to_bcd(byte value);
 
 void rtc_init(rtc_time *time)
@@ -19,7 +34,7 @@ void rtc_init(rtc_time *time)
   time->second = 0;
   time->minute = 0;
   time->hour = 0;
-  time->period = 'a';
+  time->period = 0;
   time->w_day = 0;
 }
 
@@ -51,10 +66,7 @@ void rtc_read(rtc_time *time)
         time->hour = ((b & 0x10) >> 4) * 10;
         time->hour += b & 0x0f;
         //period high = pm
-        if (b & 0x20)
-          time->period = 'p';
-        else
-          time->period = 'a';
+        time->period = b & 0x20;
         break;
       case 3:
         //week day
@@ -95,7 +107,7 @@ void rtc_write(rtc_time *time)
   Wire.send(rtc_byte_to_bcd(time->minute));
   //hours
   data = rtc_byte_to_bcd(time->hour);
-  if (time->period == 'a')
+  if (time->period == 0)
     data &= 0xdf; //clear am/pm bit to am
   else
     data |= 0x20; //set am/pm bit to pm

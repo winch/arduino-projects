@@ -100,7 +100,11 @@ void segment_print_time(byte hour, byte minute)
   minute_ten = minute / 10;
   minute_unit = minute - minute_ten * 10;
   
-  a = segment_digits[hour_ten];
+  // leave leading zero blank
+  if (hour_ten == 0)
+    a = 0;
+  else
+    a = segment_digits[hour_ten];
   b = segment_digits[hour_unit] | SEGMENT_POINT;
   c = segment_digits[minute_ten];
   d = segment_digits[minute_unit];

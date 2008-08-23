@@ -101,7 +101,10 @@ static void serial_set_time(rtc_time* time)
         //convert data back to ascii
         //read data and convert from ascii
         data += '0';
-        time->period = data;
+        if (data == 'p')
+          time->period = 1;
+        else
+          time->period = 0;
         break; 
     }
   }
@@ -115,16 +118,13 @@ static void serial_print_time(rtc_time* time)
   Serial.print("-");
   Serial.print(time->day, DEC);
   Serial.print(" ");
-  Serial.print(time->w_day, DEC);
+  Serial.print(rtc_days[time->w_day]);
   Serial.print(" ");
   Serial.print(time->hour, DEC);
   Serial.print(":");
   Serial.print(time->minute, DEC);
   Serial.print(":");
   Serial.print(time->second, DEC);
-  if (time->period == 'a')
-    Serial.println(" am");
-  else
-    Serial.println(" pm");
+  Serial.println(rtc_period[time->period]);
 }
 
