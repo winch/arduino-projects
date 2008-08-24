@@ -66,7 +66,7 @@ void rtc_read(rtc_time *time)
         time->hour = ((b & 0x10) >> 4) * 10;
         time->hour += b & 0x0f;
         //period high = pm
-        time->period = b & 0x20;
+        time->period = (b & 0x20) >> 5;
         break;
       case 3:
         //week day
