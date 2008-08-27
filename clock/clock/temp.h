@@ -2,12 +2,13 @@
 #ifndef _TEMP_H
 #define _TEMP_H
 
-extern "C"
+struct temp_value
 {
+  int temp;
+  byte point;
+};
 
-  void temp_init();
-  int temp_read();
-
-}
+void temp_init();
+temp_value temp_read();
 
 #endif

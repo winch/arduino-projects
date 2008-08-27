@@ -7,8 +7,8 @@
 #define SEGMENT_CLOCK 12
 #define SEGMENT_DATA 13
 
-#define FADE_DELAY 10
-#define ON_DURATION 5000
+#define FADE_DELAY 20
+#define ON_DURATION 4000
 
 //characters
 #define SEGMENT_POINT 0x20

@@ -2,9 +2,10 @@
 #include <stdio.h>
 #include "WConstants.h"
 #include "rtc.h"
+#include "temp.h"
 
 #define LINES 2
-#define LINE_WIDTH 16
+#define LINE_WIDTH 17
 
 static LCD4Bit lcd = LCD4Bit(LINES);
 static char lcd_line[LINE_WIDTH + 1];
@@ -26,9 +27,9 @@ void lcd_print(byte line, char *msg)
   lcd.printIn(msg);
 }
 
-void lcd_print_time(byte line, rtc_time *time)
+void lcd_print_time(byte line, rtc_time *time, temp_value temp)
 {
-  snprintf(lcd_line, LINE_WIDTH, "%.2d:%.2d:%.2d%s%s", time->hour, time->minute, time->second, rtc_period[time->period], blank_line);
+  snprintf(lcd_line, LINE_WIDTH, "%.2d:%.2d:%.2d%s %d.%dC%s", time->hour, time->minute, time->second, rtc_period[time->period], temp.temp, temp.point, blank_line);
   lcd_print(line, lcd_line);
 }
 
