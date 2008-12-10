@@ -11,15 +11,19 @@ void temp_init()
   //
 }
 
-temp_value temp_read()
+void temp_convert()
 {
-  byte high, low;
-  temp_value temp;
   //start conversion
   ds.reset();
   ds.skip();
   ds.write(0x44);
-  delayMicroseconds(750);
+  // delay(750) before conversion is finished
+}
+
+temp_value temp_read()
+{
+  byte high, low;
+  temp_value temp;
   
   //read result
   ds.reset();

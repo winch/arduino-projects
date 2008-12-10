@@ -9,6 +9,7 @@ struct temp_value
 };
 
 void temp_init();
+void temp_convert();
 temp_value temp_read();
 
 #endif
