@@ -1,5 +1,4 @@
 
-
 #ifndef _NES_H
 #define _NES_H
 
@@ -22,3 +21,4 @@ extern "C"
 }
 
 #endif
+
